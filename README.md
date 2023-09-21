@@ -1,10 +1,10 @@
 # 敏捷催催企业微信群机器人说明
-[TOC]
+
 ## 催催效果
-![效果](./doc/images/%E5%82%AC%E5%82%AC%E6%95%88%E6%9E%9C.png?inline=false)
+![效果](./images/%E5%82%AC%E5%82%AC%E6%95%88%E6%9E%9C.png?inline=false)
 ## 请作者喝一杯美式刷锅水
-![支付宝](./doc/images/ZFB.jpg)
-![微信](./doc/images/WX.jpg)
+![支付宝](./images/ZFB.jpg)
+![微信](./images/WX.jpg)
 ## 功能
 自动统计当前项目的当前迭代的：
 * 总计工作量
@@ -28,24 +28,24 @@
 推荐文本编辑器为`VSCode`
 ## 喂饭级使用教程
 ### 1. 在企业微信群创建一个机器人
-![创建机器人1](./doc/images/%E5%88%9B%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA.png)
-![创建机器人2](./doc/images/%E5%88%9B%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA2.png)
+![创建机器人1](./images/%E5%88%9B%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA.png)
+![创建机器人2](./images/%E5%88%9B%E5%BB%BA%E6%9C%BA%E5%99%A8%E4%BA%BA2.png)
 此时，会自动打开机器人的网络页面
-![记住机器人的webHook](./doc/images/%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B1%9E%E6%80%A7%E9%A1%B5.png)
+![记住机器人的webHook](./images/%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%B1%9E%E6%80%A7%E9%A1%B5.png)
 记住机器人的webHook，配置` definition.py`时需要用到
  * tip: 如果你忘记了机器人的webHook地址，可以在群里找到机器人，点击后会看到这个地址
 ### 2. 下载敏捷催催源码
-![下载代码](./doc/images/%E4%B8%8B%E8%BD%BD%E4%BB%A3%E7%A0%81.png)
+![下载代码](./images/%E4%B8%8B%E8%BD%BD%E4%BB%A3%E7%A0%81.png)
 下载后的压缩包解压到自己想要的路径。(后文以```%path%```替代)
 打开`%path\code `
 ### 3. 配置definition.py
 * 用NotePadd++/VSCode等打开` %path%\Code\definition.py`
 * 修改`account,password,oaAccount, oaPassword`分别为：你的禅道账户名、禅道密码、oa用户、oa密码。当然，如果你的oa用户和禅道用户一样，oa密码和禅道密码一样，你可以只填`account`h和`password`，不改`oaAccount`和`oaPassword`
 * 登录自己的禅道，打开项目列表，找到自己负责的项目
-![项目名称](./doc/images/%E9%A1%B9%E7%9B%AE%E5%90%8D%E7%A7%B0.png)
+![项目名称](./images/%E9%A1%B9%E7%9B%AE%E5%90%8D%E7%A7%B0.png)
 复制项目名称，修`project`的值为你的项目
 * 【如果你的项目里面不止一个产品】打开自己的项目，找到你的产品所属迭代，迭代名称内包含的你的产品名，填入`product`，例如下图我可以填写`Direct`
-![迭代列表](./doc/images/迭代填产品.png)
+![迭代列表](./images/迭代填产品.png)
 * 【如果你的项目只有一个产品】设置`product`为空字符串
 * 修改`boturl`为你企业微信群的机器人webHook地址
 * 按照现有格式修改`name_ids`为你项目组中开发人员的`"姓名","工号"`的对应关系。(如果输入错误，将无法正确@到人)。注意，姓名为禅道的姓名
@@ -65,9 +65,9 @@
 * 打开你电脑的`任务计划程序`
 * 在程序的左侧有一个`任务计划程序库`，右键创建任务
 * 可参考如下填写
-![计划任务-常规页](./doc/images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E5%B8%B8%E8%A7%84%E9%A1%B5.png)
-![计划任务-触发器](./doc/images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E8%A7%A6%E5%8F%91%E5%99%A8.png)
-![计划任务-操作](./doc/images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E6%93%8D%E4%BD%9C.png)
+![计划任务-常规页](./images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E5%B8%B8%E8%A7%84%E9%A1%B5.png)
+![计划任务-触发器](./images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E8%A7%A6%E5%8F%91%E5%99%A8.png)
+![计划任务-操作](./images/%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1-%E6%93%8D%E4%BD%9C.png)
 
 ## 运行逻辑
 1. 登录

@@ -2,6 +2,7 @@ import sys
 import requests
 import datetime
 import logging
+import configparser
 global account
 global password
 global contentHeader
@@ -14,14 +15,21 @@ global yesterday
 global oaAccount
 global oaPassword
 global product
+
+# 创建 ConfigParser 对象
+config = configparser.ConfigParser()
+
+# 读取配置文件
+config.read('config.ini', encoding='utf-8')
+
 # 这部分根据自己情况修改
-account = "YourAccount"
-password = "YourPassword"
+account = config.get('Settings', 'account')
+password = config.get('Settings', 'password')
 oaAccount = account
 oaPassword = password
-project = "Your Project"
-product = "Your Product"
-boturl = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_bot_id'
+project = config.get('Settings', 'project')
+product = config.get('Settings', 'product')
+boturl = config.get('Settings', 'boturl')
 name_ids = {'叶蓬': '20181110'} # 项目中的人的名字：工号
 forgetRecordPath = '..\\奶茶计数器\\data'# 遗忘次数保存文件夹地址(每个人以人名_id存成一个文件，内容为遗忘次数)
 
