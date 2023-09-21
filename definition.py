@@ -3,6 +3,7 @@ import requests
 import datetime
 import logging
 import configparser
+import keyring
 global account
 global password
 global contentHeader
@@ -22,11 +23,15 @@ config = configparser.ConfigParser()
 # 读取配置文件
 config.read('config.ini', encoding='utf-8')
 
-# 这部分根据自己情况修改
+# 这部分根据自己情况修改（获取密码）
+service_name = "my_app"
 account = config.get('Settings', 'account')
-password = config.get('Settings', 'password')
+retrieved_password = keyring.get_password(service_name, account)
+password = retrieved_password
 oaAccount = account
 oaPassword = password
+
+# 这部分根据自己情况修改
 project = config.get('Settings', 'project')
 product = config.get('Settings', 'product')
 boturl = config.get('Settings', 'boturl')

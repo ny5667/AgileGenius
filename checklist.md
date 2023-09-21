@@ -20,3 +20,8 @@ python -m idlelib.idle
 pip freeze > requirements.txt
 
 pip install -r requirements.txt
+
+第一次使用需要设置密码,在`config.init`中配置完用户名和密码后，要执行
+```
+python init_password.py
+```
