@@ -1,6 +1,5 @@
 from execution_log_data import ExecutionLogData
 from execution_team import ExecutionTeam
-import logging
 from lxml import etree
 import definition
 

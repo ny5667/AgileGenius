@@ -1,6 +1,5 @@
 import definition
 from lxml import etree
-import logging
 import constants
 
 class TeamMate:

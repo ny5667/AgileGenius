@@ -1,5 +1,4 @@
 import logging
-import string
 import definition
 from lxml import etree
 import constants

@@ -4,7 +4,7 @@ import definition
 import requests
 import json
 import sys
-from KQ import KQ
+from kq import kq
 from execution_data import execution_data
 from lxml import etree
 from daily_report_generator import report_generator
@@ -92,8 +92,8 @@ class Zentao():
             return self.url(execution_path)
 
 def yesterday_is_holiday():
-    kq = KQ()
-    return kq.is_holiday(definition.yesterday)
+    kq1 = kq()
+    return kq1.is_holiday(definition.yesterday)
 
 if __name__ == '__main__':
     if yesterday_is_holiday():

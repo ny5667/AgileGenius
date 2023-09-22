@@ -3,8 +3,6 @@ import re
 import json
 import base64
 import definition
-from datetime import date
-from datetime import datetime
 from lxml import etree
 
 import sys
@@ -17,7 +15,7 @@ header = {
     "User-Agent": userAgent
 }
 
-class KQ():
+class kq():
     def __init__(self):
         # 创建Session
         self.a_session = requests.session()

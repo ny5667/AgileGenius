@@ -3,7 +3,6 @@ import datetime
 from doctest import FAIL_FAST
 import string
 import definition
-import logging
 import os
 import sys
 
@@ -91,7 +90,20 @@ class report_generator:
         
         # 记录遗忘次数
         self.forget_record(mention_list)
+        return self.generate_md(execution_recorded, recorded, mention_list)
+    
+    def generate_md(self, execution_recorded, recorded, mention_list):
+        """
+        这个函数用生成md。
 
+        参数:
+        execution_recorded (string):   本迭代统计工作量
+        recorded (string):             昨日统计工作量
+        mention_list (string):         未填工作量名单
+
+        返回:
+        string: 生成的md内容
+        """
         # 生成md
         text= "# 敏捷不止催催\n## 本迭代工作量统计:"
         for person in execution_recorded.keys():
@@ -114,5 +126,4 @@ class report_generator:
                 "content": text
             }
         }
-
         return request_data
