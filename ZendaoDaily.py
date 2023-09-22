@@ -5,9 +5,9 @@ import requests
 import json
 import sys
 from KQ import KQ
-from ExecutionData import ExecutionData
+from execution_data import execution_data
 from lxml import etree
-from DailyReportGenerator import ReportGenerator
+from daily_report_generator import report_generator
 import datetime
 
 loginPath = "/biz/user-login.html"
@@ -114,14 +114,14 @@ if __name__ == '__main__':
     latestExecutionPath = zentaoApi.latest_execution_path(executionListPath)
     print('latestExecutionPath: ' + latestExecutionPath)
     logging.info('latestExecutionPath: ' + latestExecutionPath)
-    data = ExecutionData(latestExecutionPath)
+    data = execution_data(latestExecutionPath)
 
     # 加载迭代数据
     data.load_data()
     print('loadData complete')
     logging.info('loadData complete')
     # 生成报告
-    reportGenerator = ReportGenerator(data)
+    reportGenerator = report_generator(data)
     requestData = reportGenerator.generate()
 
     print('request data:' + json.dumps(requestData, ensure_ascii=False))

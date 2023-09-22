@@ -7,7 +7,7 @@ import logging
 import os
 import sys
 
-class ReportGenerator:
+class report_generator:
     logs_by_person = {}
     logs_by_day = {}
     valid_team_mates = []

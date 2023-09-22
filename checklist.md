@@ -1,4 +1,6 @@
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ny5667_AgileGenius&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ny5667_AgileGenius)
+
 切换IDLE工作目录
 ```
 import os

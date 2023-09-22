@@ -1,5 +1,5 @@
-from ExecutionLogData import ExecutionLogData
-from ExecutionTeam import ExecutionTeam
+from execution_log_data import ExecutionLogData
+from execution_team import ExecutionTeam
 import logging
 from lxml import etree
 import definition
@@ -24,7 +24,7 @@ class ExecutionProperty:
         print('end:'+ self.end)
         print('============================')
 
-class ExecutionData:
+class execution_data:
     log = ExecutionLogData()
     team = ExecutionTeam()
     property = ExecutionProperty()
