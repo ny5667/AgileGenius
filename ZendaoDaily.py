@@ -27,7 +27,7 @@ class Zentao():
     获取随机码，用于登录
     """
     def get_sessionid_rand(self):
-        response = definition.session.get(url=self.Url(randomPath), headers={
+        response = definition.session.get(url=self.url(randomPath), headers={
                                     'X-Requested-With': 'XMLHttpRequest'})
         random = response.content
         sid = response.headers['Set-Cookie']
@@ -36,7 +36,7 @@ class Zentao():
         return result.group(1), random
 
     @property
-    def get_loginData(self):
+    def get_login_data(self):
         return {"account": definition.account,
                 "password": definition.password,
                 "passwordStrength": 1,
@@ -44,59 +44,59 @@ class Zentao():
                 "verifyRand": self.rand,
                 "keepLogin": 1}
 
-    def Url(self, path):
+    def url(self, path):
         return definition.baseurl + path
 
     """
     登录
     """
     def login(self):
-        response = definition.session.post(url=self.Url(loginPath), headers={
-                                     'X-Requested-With': 'XMLHttpRequest'}, data=self.get_loginData)
+        response = definition.session.post(url=self.url(loginPath), headers={
+                                     'X-Requested-With': 'XMLHttpRequest'}, data=self.get_login_data)
         logging.info('login response:' + response.text)
 
     """获取团队成员"""
 
-    def getProjectPath(self):
-        projectListPage = definition.session.post(url=self.Url(
+    def get_project_path(self):
+        project_list_page = definition.session.post(url=self.url(
             projectListPath), headers=definition.contentHeader)
-        projectListHTML = etree.HTML(projectListPage.content.decode(
+        project_list_html = etree.HTML(project_list_page.content.decode(
             'utf-8'), etree.HTMLParser(encoding='utf-8'))
-        projectResult = projectListHTML.xpath(
+        project_result = project_list_html.xpath(
             '//td[@title="'+definition.project+'"]/div/a/@href')
-        projectPath = projectResult[0]  # 将index替换成team，获取团队页面
-        return self.Url(projectPath)
+        project_path = project_result[0]  # 将index替换成team，获取团队页面
+        return self.url(project_path)
 
-    def latestExecutionPath(self, listPath):
-        nowTime = datetime.datetime.now()
-        executionListPage = definition.session.post(
-            url=listPath, headers=definition.contentHeader)
-        executionListHTML = etree.HTML(executionListPage.content.decode(
+    def latest_execution_path(self, list_path):
+        now_time = datetime.datetime.now()
+        execution_list_page = definition.session.post(
+            url=list_path, headers=definition.contentHeader)
+        execution_list_html = etree.HTML(execution_list_page.content.decode(
             'utf-8'), etree.HTMLParser(encoding='utf-8'))
-        executionRows = executionListHTML.xpath(
+        execution_rows = execution_list_html.xpath(
             '//tbody[@id="executionTableList"]/tr')
         # 倒序
-        executionRows.reverse()
+        execution_rows.reverse()
         #遍历所有迭代，选取第一个当天所在的迭代
-        for executionRow in executionRows:
-            executionCols = executionRow.xpath('./td')
-            startTime = datetime.datetime.strptime(executionCols[4].text + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
-            endTime = datetime.datetime.strptime(executionCols[5].text + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
-            if startTime > nowTime or nowTime > endTime:
+        for execution_row in execution_rows:
+            execution_cols = execution_row.xpath('./td')
+            start_time = datetime.datetime.strptime(execution_cols[4].text + ' 00:00:00', '%Y-%m-%d %H:%M:%S')
+            end_time = datetime.datetime.strptime(execution_cols[5].text + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
+            if start_time > now_time or now_time > end_time:
                 continue
-            executionPath = executionCols[0].xpath('./a/@href')[0]
-            executionName = executionCols[0].xpath('./a/text()')[0]
-            if (len(definition.product) > 0) and (definition.product not in executionName):
+            execution_path = execution_cols[0].xpath('./a/@href')[0]
+            execution_name = execution_cols[0].xpath('./a/text()')[0]
+            if (len(definition.product) > 0) and (definition.product not in execution_name):
                 continue
 
-            return self.Url(executionPath)
+            return self.url(execution_path)
 
-def YesterdayIsHoliday():
+def yesterday_is_holiday():
     kq = KQ()
-    return kq.isHoliday(definition.yesterday)
+    return kq.is_holiday(definition.yesterday)
 
 if __name__ == '__main__':
-    if YesterdayIsHoliday():
+    if yesterday_is_holiday():
         sys.exit(0)
 
     zentaoApi = Zentao()
@@ -105,19 +105,19 @@ if __name__ == '__main__':
     print("login zentao success")
     logging.info("login zentao success")
     # 找到项目
-    projectListPath = zentaoApi.getProjectPath()
+    projectListPath = zentaoApi.get_project_path()
     executionListPath = projectListPath.replace('index', 'execution-all') # 将index替换execution-all，获取所有的execution列表
     print('executionListPath: ' + executionListPath)
     logging.info('executionListPath: ' + executionListPath)
 
     # 找迭代
-    latestExecutionPath = zentaoApi.latestExecutionPath(executionListPath)
+    latestExecutionPath = zentaoApi.latest_execution_path(executionListPath)
     print('latestExecutionPath: ' + latestExecutionPath)
     logging.info('latestExecutionPath: ' + latestExecutionPath)
     data = ExecutionData(latestExecutionPath)
 
     # 加载迭代数据
-    data.loadData()
+    data.load_data()
     print('loadData complete')
     logging.info('loadData complete')
     # 生成报告

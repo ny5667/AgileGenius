@@ -9,7 +9,7 @@ class ExecutionProperty:
     start = ""
     end = ""
 
-    def loadProperty(self, path):
+    def load_property(self, path):
         rsp = definition.session.post(
             url=path, headers=definition.contentHeader)
         html = etree.HTML(rsp.content.decode(
@@ -17,10 +17,10 @@ class ExecutionProperty:
         print('=====exectuion Property=====')
         self.name = html.xpath('//h2[@class="detail-title"]/text()')[1]
         print('name:'+ self.name)
-        statisticRows = html.xpath('//table[@class="table table-data data-stats"]/tbody/tr')
-        self.start = statisticRows[2].xpath('./td[1]/text()')[0]
+        statistic_rows = html.xpath('//table[@class="table table-data data-stats"]/tbody/tr')
+        self.start = statistic_rows[2].xpath('./td[1]/text()')[0]
         print('start:'+ self.start)
-        self.end = statisticRows[3].xpath('./td[1]/text()')[0]
+        self.end = statistic_rows[3].xpath('./td[1]/text()')[0]
         print('end:'+ self.end)
         print('============================')
 
@@ -32,14 +32,14 @@ class ExecutionData:
     def __init__(self, path):
         self.path = path
         
-    def loadData(self):
+    def load_data(self):
         # 属性
-        self.property.loadProperty(self.path)
+        self.property.load_property(self.path)
 
         # 团队
-        teamPath = self.path.replace('view', 'team')
-        self.team.loadTeam(teamPath)
+        team_path = self.path.replace('view', 'team')
+        self.team.load_team(team_path)
 
         # 日志
-        logPath = self.path.replace('view', 'effortcalendar')
-        self.log.loadLog(logPath)
+        log_path = self.path.replace('view', 'effortcalendar')
+        self.log.load_log(log_path)

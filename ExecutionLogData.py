@@ -17,20 +17,20 @@ class ExecutionLog:
 class ExecutionLogData:
     logs = []
 
-    def loadLog(self,path):
+    def load_log(self,path):
         # 拼接Url
-        logDataPath = path.replace("effortcalendar", "effort")[:-5]+'-all--date_desc-0-1000-0'+'.html'
-        logListPage = definition.session.post(
-            url=logDataPath, headers=definition.contentHeader)
-        logging.info('logPage data:\n'+ logListPage.content.decode('utf-8'))
-        logListHTML = etree.HTML(logListPage.content.decode(
+        log_data_path = path.replace("effortcalendar", "effort")[:-5]+'-all--date_desc-0-1000-0'+'.html'
+        log_list_page = definition.session.post(
+            url=log_data_path, headers=definition.contentHeader)
+        logging.info('logPage data:\n'+ log_list_page.content.decode('utf-8'))
+        log_list_html = etree.HTML(log_list_page.content.decode(
             'utf-8'), etree.HTMLParser(encoding='utf-8'))
         # 从开始时间解析
-        logElements = logListHTML.xpath('//table[@id="effortList"]/tbody/tr')
+        log_elements = log_list_html.xpath('//table[@id="effortList"]/tbody/tr')
         
-        for logElement in logElements:
+        for log_element in log_elements:
             log = ExecutionLog()
-            log.parse(logElement)
+            log.parse(log_element)
             if log.spend == 0:
                 continue
             self.logs.append(log)

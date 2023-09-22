@@ -10,13 +10,6 @@ from lxml import etree
 import sys
 sys.path.append("C:\\Lib")  # 用于指定Python依赖模块路径
 import requests
-#import pysnooper
-
-#RECORDS_DUMP_FILE = r"D:\records.json"
-#WORKDAY_DUMP_FILE = r"D:\workday_info.json"
-
-#RECORDS_DEBUG_FILE = r"D:\records.json"
-#WORKDAY_DEBUG_FILE = r"D:\workday_info.json"
 
 
 userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
@@ -27,20 +20,18 @@ header = {
 class KQ():
     def __init__(self):
         # 创建Session
-        self.aSession = requests.session()
+        self.a_session = requests.session()
         # 登陆信息  
-        self.login(self.aSession, definition.oaAccount, definition.oaPassword)
-        self.staffId = self.getStaffId()
+        self.login(self.a_session, definition.oaAccount, definition.oaPassword)
+        self.staff_id = self.get_staff_id()
 
     #@pysnooper.snoop("debug.log")
-    def getStaffId(self):
+    def get_staff_id(self):
         url = "https://ehr.supcon.com/RedseaPlatform/PtPortal.mc?method=classic"
-        responseRes = self.aSession.get(url)
+        response_res = self.a_session.get(url)
 
-        #print(f"statusCode = {responseRes.status_code}")
-        #print(f"text = {responseRes.text}")
 
-        staffid_content = responseRes.text
+        staffid_content = response_res.text
         get_staffid_pattern = re.compile(r"staffId: '(.*?)'", re.S | re.M)
         _staffid = re.findall(get_staffid_pattern, staffid_content)
 
@@ -52,14 +43,14 @@ class KQ():
         return _staffid[0]
 
     #@pysnooper.snoop("debug.log")
-    def getLt(self):
-        firstUrl = "https://portal.supcon.com/cas-web/login?service=https%3A%2F%2Fehr.supcon.com%2FRedseaPlatform%2F"
-        responseRes = self.aSession.get(firstUrl)
+    def get_lt(self):
+        first_url = "https://portal.supcon.com/cas-web/login?service=https%3A%2F%2Fehr.supcon.com%2FRedseaPlatform%2F"
+        response_res = self.a_session.get(first_url)
         # 无论是否登录成功，状态码一般都是 statusCode = 200
         #print(f"statusCode = {responseRes.status_code}")
         #print(f"text = {responseRes.text}")
 
-        html = etree.HTML(responseRes.content.decode(
+        html = etree.HTML(response_res.content.decode(
             'utf-8'), etree.HTMLParser(encoding='utf-8'))
 
         _lt = html.xpath('//input[@name="lt"]/@value')
@@ -69,13 +60,13 @@ class KQ():
 
 
     #@pysnooper.snoop("debug.log")
-    def login(self, aSession, username, password):
+    def login(self, a_session, username, password):
 
         b64password = base64.b64encode(password.encode())
 
-        lt = self.getLt()
+        lt = self.get_lt()
 
-        postData = {
+        post_data = {
             "portal_username": username,
             "password": b64password,
             "bakecookie": "on",
@@ -84,30 +75,26 @@ class KQ():
             "username": username,
         }
 
-        # JSESSIONID = aSession.cookies.get_dict()["JSESSIONID"]
-        # print(f"JSESSIONID = {JSESSIONID}")
-
-        # loginUrl = "https://portal.supcon.com/cas-web/login;jsessionid="+ JSESSIONID + "?service=https%3A%2F%2Fehr.supcon.com%2FRedseaPlatform%2F"
-        loginUrl = "https://portal.supcon.com/cas-web/login?service=https%3A%2F%2Fehr.supcon.com%2FRedseaPlatform%2F"
-        responseRes = aSession.post(loginUrl, data=postData, headers=header)
+        login_url = "https://portal.supcon.com/cas-web/login?service=https%3A%2F%2Fehr.supcon.com%2FRedseaPlatform%2F"
+        a_session.post(login_url, data=post_data, headers=header)
 
 
 
     #@pysnooper.snoop("debug.log")
-    def isHoliday(self, date):
+    def is_holiday(self, date):
 
-        postData = {
-            "staff_id": self.staffId,
+        post_data = {
+            "staff_id": self.staff_id,
             "begin": date,
             "end": date
         }
 
-        queryUrl = "https://ehr.supcon.com/RedseaPlatform/getList/kq_count_abnormal_SelectStaffID/CoreRequest.mc?"
+        query_url = "https://ehr.supcon.com/RedseaPlatform/getList/kq_count_abnormal_SelectStaffID/CoreRequest.mc?"
 
-        responseRes = self.aSession.post(queryUrl, data=postData, headers=header)
+        response_res = self.a_session.post(query_url, data=post_data, headers=header)
 
-        workdatInfos = json.loads(responseRes.text)
+        workdat_infos = json.loads(response_res.text)
 
-        return workdatInfos["result"]["#result-set-1"][0]["kq_status_total_name"] == '休息'
+        return workdat_infos["result"]["#result-set-1"][0]["kq_status_total_name"] == '休息'
 
 
