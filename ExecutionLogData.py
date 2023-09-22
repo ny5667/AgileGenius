@@ -2,14 +2,15 @@ import logging
 import string
 import definition
 from lxml import etree
+import constants
 
 class ExecutionLog:
     def parse(self, html):
         cols = html.xpath('./td')
-        self.time = cols[1].xpath('./text()')[0]
-        self.person = cols[2].xpath('./text()')[0]
+        self.time = cols[1].xpath(constants.TEXT_XPATH)[0]
+        self.person = cols[2].xpath(constants.TEXT_XPATH)[0]
         self.context = cols[3].xpath('./a/text()')[0]
-        spend = cols[4].xpath('./text()')[0]
+        spend = cols[4].xpath(constants.TEXT_XPATH)[0]
         self.spend = float(spend)
         print('time:name:context:spend='+  self.time + ":"+self.person + ":"+ self.context +":"+spend)
         logging.info('time:name:context:spend='+  self.time + ":"+self.person + ":"+ self.context +":"+spend)

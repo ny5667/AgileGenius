@@ -14,23 +14,23 @@ class ReportGenerator:
     def __init__(self, data):
         # 按人归类
         for log in data.log.logs:
-            personLog = self.logs_by_person.get(log.person)
-            if personLog == None:
+            person_log = self.logs_by_person.get(log.person)
+            if person_log == None:
                 self.logs_by_person[log.person] = []
             self.logs_by_person[log.person].append(log)
         # 按天归类
         for log in data.log.logs:
-            dailyLog = self.logs_by_day.get(log.time)
-            if dailyLog == None:
+            daily_log = self.logs_by_day.get(log.time)
+            if daily_log == None:
                 self.logs_by_day[log.time] = []
             self.logs_by_day[log.time].append(log)
 
         # 有效人
-        for teamMate in data.team.team_mates:
-            if teamMate.useable_total > 0:
-                self.valid_team_mates.append(teamMate)
+        for team_mate in data.team.team_mates:
+            if team_mate.useable_total > 0:
+                self.valid_team_mates.append(team_mate)
 
-    def forget_record(self, mentionList):
+    def forget_record(self, mention_list):
         if len(sys.argv) <= 1 or sys.argv.count("r") <= 0 :
             return
 
@@ -39,25 +39,25 @@ class ReportGenerator:
         if os.path.exists (definition.forgetRecordPath) == False:
             os.makedirs(definition.forgetRecordPath)
 
-        for person in mentionList:
-            path = definition.forgetRecordPath + '\\' + person + '_' + mentionList[person]
+        for person in mention_list:
+            path = definition.forgetRecordPath + '\\' + person + '_' + mention_list[person]
             count = 0
             # 读文件
             try:
-                with open(path, 'r') as recordFile:
-                    recordData = recordFile.read()
-                    if recordData != "":
-                        lines = recordData.split('\n')
+                with open(path, 'r') as record_file:
+                    record_data = record_file.read()
+                    if record_data != "":
+                        lines = record_data.split('\n')
                         count = int(lines[1])
-            except Exception as e:
+            except Exception:
                 print("文件" + path + "不存在")
             
             # 写文件
-            with open(path, 'w') as recordFile:
+            with open(path, 'w') as record_file:
                 today = datetime.datetime.now().strftime('%Y-%m-%d')
-                recordFile.write(today + "\n" + str(count + 1))
+                record_file.write(today + "\n" + str(count + 1))
 
-    def generate(self, file):
+    def generate(self):
         yesterday_logs = self.logs_by_day.get(definition.yesterday)
         # 本迭代统计工作量
         execution_recorded = {}

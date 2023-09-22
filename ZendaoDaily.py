@@ -122,7 +122,7 @@ if __name__ == '__main__':
     logging.info('loadData complete')
     # 生成报告
     reportGenerator = ReportGenerator(data)
-    requestData = reportGenerator.generate('RequestContent.json')
+    requestData = reportGenerator.generate()
 
     print('request data:' + json.dumps(requestData, ensure_ascii=False))
     rsp = requests.post(url=definition.boturl, json=requestData, headers={'Content-Type': 'application/json'})

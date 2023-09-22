@@ -1,6 +1,8 @@
 import definition
 from lxml import etree
 import logging
+import constants
+
 class TeamMate:
     name=""
     useable_day = 0 # 可用工日
@@ -26,14 +28,14 @@ class ExecutionTeam:
         rows = html.xpath('//tbody/tr')
         for single_row in rows:
             cells =  single_row.xpath('./td')
-            name = cells[0].xpath('./text()')[0]
+            name = cells[0].xpath(constants.TEXT_XPATH)[0]
             name_in_link = cells[0].xpath('./a/text()')
             # 考虑name有两种方式，如果存在Link里面就用里面的
             if len(name_in_link) > 0:
                 name = name_in_link[0]
             # 禅道的name有问题，可能会带空格和换行符，做一下兼容
             name = name.strip('\n').strip()
-            day = cells[3].xpath('./text()')[0]
-            hour = cells[4].xpath('./text()')[0]
-            total = cells[5].xpath('./text()')[0]
+            day = cells[3].xpath(constants.TEXT_XPATH)[0]
+            hour = cells[4].xpath(constants.TEXT_XPATH)[0]
+            total = cells[5].xpath(constants.TEXT_XPATH)[0]
             self.team_mates.append(TeamMate(name, day, hour, total))
