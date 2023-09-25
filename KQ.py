@@ -15,7 +15,7 @@ header = {
     "User-Agent": userAgent
 }
 
-class kq():
+class Kq():
     def __init__(self):
         # 创建Session
         self.a_session = requests.session()

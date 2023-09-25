@@ -4,7 +4,7 @@ import definition
 import requests
 import json
 import sys
-from kq import kq
+from kq import Kq
 from execution_data import execution_data
 from lxml import etree
 from daily_report_generator import report_generator
@@ -54,6 +54,8 @@ class Zentao():
         response = definition.session.post(url=self.url(loginPath), headers={
                                      'X-Requested-With': 'XMLHttpRequest'}, data=self.get_login_data)
         logging.info('login response:' + response.text)
+        logging.info('login data:' + str(self.get_login_data))
+        logging.info('login path:' + loginPath)
 
     """获取团队成员"""
 
@@ -92,8 +94,8 @@ class Zentao():
             return self.url(execution_path)
 
 def yesterday_is_holiday():
-    kq1 = kq()
-    return kq1.is_holiday(definition.yesterday)
+    kq = Kq()
+    return kq.is_holiday(definition.yesterday)
 
 if __name__ == '__main__':
     if yesterday_is_holiday():
